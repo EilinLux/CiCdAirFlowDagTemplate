@@ -28,7 +28,7 @@ logsBucket: 'gs://vf-test-edm-de-core-extract-logging'
 options:
   logging: GCS_ONLY
   pool:
-    name: 'projects/vf-tst-nwp-live/locations/europe-west1/workerPools/edm-worker-pool'
+    name: 'projects/${_PROJECT_ID}/locations/${_REGION}/workerPools/${_WORKER_POOL}'
 
 
 
