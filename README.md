@@ -19,4 +19,53 @@ In our case the two following applies :
 
 This repo is a template to set up deploy and test of DAG and Jobs 
 
-1) add-dags-to-composer.cloudbuild.yaml add the dag in /dags folder to your enviroment, to make it work add in the cloudbuild _DAGS_DIRECTORY and _DAGS_BUCKET.
+### folder structure 
+1) add-dags-to-composer.cloudbuild.yaml: install dependencies and run utils/add_dags_to_composer.py
+2) /utils/add_dags_to_composer.py: called by add-dags-to-composer.cloudbuild.yaml, contains python script to add your dags in /dags folder to your enviroment and additional utils code (ex. zip files)
+3) /dags folder contains
+*  file to configure dag creation, job exection and  dag deletion (GOALNAME-dag.py)
+*  folder (GOALNAME) that contains the job (GOALNAME/GOALNAME_job.py) and zipped utils (GOALNAME/utils.zip)
+
+# Environment variables
+Environment variables, as the name suggests, are variables in your system that describe your environment. 
+
+for some of the files you need to set up the following env variables 
+
+add-dags-to-composer.cloudbuild.yaml --> 
+  _DAGS_DIRECTORY:   dags location for your AirFlow 
+  _DAGS_BUCKET:  location on gcp Cloud Storage bucket that should store the code
+
+GOALNAME/GOALNAME_job.py --> 
+
+_PROJECT_ID
+_REGION (ex. 'europe-west1')
+_ZONE (ex. 'europe-west1-b'
+_IMAGE (ex. '1.5.53-debian10')
+_SUBNETWORK (ex. 'projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_NAME')
+_SERVICE_ACCOUNT (ex. 'PROJECT_ID-comp-sa@PROJECT_ID.iam.gserviceaccount.com')
+
+
+
+_GOAL (ex. spark_transformations)
+
+
+
+_MASTER_MACHINE
+_WORKER_MACHINE
+_MASTER_DISK_SIZE
+_WORKER_DISK_SIZE
+_WORKER_NUMBER
+_WORKER_PREEMPTIBLE_NUMBER # num-secondary-workers more info: https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms
+_MAX_IDLE
+_TAGS  (ex. ['allow-internal-dataproc-dev', 'allow-ssh-from-management-zone-dev']) Specifies strings to be attached to the instance for later identifying the instance when adding network firewall rules, it can be a list, 
+_SCHEDULER
+More info: https://airflow.apache.org/docs/apache-airflow/1.10.3/_api/airflow/contrib/operators/dataproc_operator/index.html 
+
+[Optinal -but set in this demo]
+_ENV (ex. "dev")
+_LOCAL_MARKET (ex. 'es')
+_RELEASE  (ex. r1, r2, ...) 
+_SPARK_JAR (ex.'gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar'), if need to have it static 
+
+
+
