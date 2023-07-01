@@ -31,25 +31,20 @@ Environment variables, as the name suggests, are variables in your system that d
 
 for some of the files you need to set up the following env variables 
 
-add-dags-to-composer.cloudbuild.yaml --> 
-  _DAGS_DIRECTORY:   dags location for your AirFlow 
-  _DAGS_BUCKET:  location on gcp Cloud Storage bucket that should store the code
+### add-dags-to-composer.cloudbuild.yaml
+*  _DAGS_DIRECTORY:   dags location for your AirFlow 
+*  _DAGS_BUCKET:  location on gcp Cloud Storage bucket that should store the code
 
-GOALNAME/GOALNAME_job.py --> 
-
+### GOALNAME/GOALNAME_job.py 
+#### project related
 * _PROJECT_ID
 * _REGION (ex. 'europe-west1')
 * _ZONE (ex. 'europe-west1-b'
-* _IMAGE (ex. '1.5.53-debian10')
 * _SUBNETWORK (ex. 'projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_NAME')
 * _SERVICE_ACCOUNT (ex. 'PROJECT_ID-comp-sa@PROJECT_ID.iam.gserviceaccount.com')
 
-
-
-* _GOAL (ex. spark_transformations)
-
-
-
+#### DAG related (More info: https://airflow.apache.org/docs/apache-airflow/1.10.3/_api/airflow/contrib/operators/dataproc_operator/index.html)
+* _IMAGE (ex. '1.5.53-debian10')
 * _MASTER_MACHINE
 * _WORKER_MACHINE
 * _MASTER_DISK_SIZE
@@ -60,10 +55,8 @@ GOALNAME/GOALNAME_job.py -->
 * _TAGS  (ex. ['allow-internal-dataproc-dev', 'allow-ssh-from-management-zone-dev']) Specifies strings to be attached to the instance for later identifying the instance when adding network firewall rules, it can be a list, 
 * _SCHEDULER
 
-  
-More info: https://airflow.apache.org/docs/apache-airflow/1.10.3/_api/airflow/contrib/operators/dataproc_operator/index.html 
-
-[Optinal -but set in this demo]
+####  [Optinal]  but set in this demo
+* _GOAL (ex. spark_transformations)
 * _ENV (ex. "dev")
 * _LOCAL_MARKET (ex. 'es')
 * _RELEASE  (ex. r1, r2, ...) 
