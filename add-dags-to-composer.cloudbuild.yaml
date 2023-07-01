@@ -24,7 +24,7 @@ steps:
     entrypoint: python
     args: ["utils/add_dags_to_composer.py", "--dags_directory=${_DAGS_DIRECTORY}", "--dags_bucket=${_DAGS_BUCKET}"]
     
-logsBucket: 'gs://vf-test-edm-de-core-extract-logging'
+logsBucket: 'gs://${_DAGS_BUCKET}-logging'
 options:
   logging: GCS_ONLY
   pool:
