@@ -35,7 +35,7 @@ Environment variables, as the name suggests, are variables in your system that d
 * _WORKER_POOL
 * _PROJECT_ID
 * _REGION (ex. 'europe-west1')
-* _ZONE (ex. 'europe-west1-b'
+* _ZONE (ex. 'europe-west1-b')
 * _SUBNETWORK (ex. 'projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_NAME')
 * _SERVICE_ACCOUNT (ex. 'PROJECT_ID-comp-sa@PROJECT_ID.iam.gserviceaccount.com')
 
