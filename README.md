@@ -37,35 +37,37 @@ add-dags-to-composer.cloudbuild.yaml -->
 
 GOALNAME/GOALNAME_job.py --> 
 
-_PROJECT_ID
-_REGION (ex. 'europe-west1')
-_ZONE (ex. 'europe-west1-b'
-_IMAGE (ex. '1.5.53-debian10')
-_SUBNETWORK (ex. 'projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_NAME')
-_SERVICE_ACCOUNT (ex. 'PROJECT_ID-comp-sa@PROJECT_ID.iam.gserviceaccount.com')
+* _PROJECT_ID
+* _REGION (ex. 'europe-west1')
+* _ZONE (ex. 'europe-west1-b'
+* _IMAGE (ex. '1.5.53-debian10')
+* _SUBNETWORK (ex. 'projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_NAME')
+* _SERVICE_ACCOUNT (ex. 'PROJECT_ID-comp-sa@PROJECT_ID.iam.gserviceaccount.com')
 
 
 
-_GOAL (ex. spark_transformations)
+* _GOAL (ex. spark_transformations)
 
 
 
-_MASTER_MACHINE
-_WORKER_MACHINE
-_MASTER_DISK_SIZE
-_WORKER_DISK_SIZE
-_WORKER_NUMBER
-_WORKER_PREEMPTIBLE_NUMBER # num-secondary-workers more info: https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms
-_MAX_IDLE
-_TAGS  (ex. ['allow-internal-dataproc-dev', 'allow-ssh-from-management-zone-dev']) Specifies strings to be attached to the instance for later identifying the instance when adding network firewall rules, it can be a list, 
-_SCHEDULER
+* _MASTER_MACHINE
+* _WORKER_MACHINE
+* _MASTER_DISK_SIZE
+* _WORKER_DISK_SIZE
+* _WORKER_NUMBER
+* _WORKER_PREEMPTIBLE_NUMBER # num-secondary-workers more info: https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms
+* _MAX_IDLE
+* _TAGS  (ex. ['allow-internal-dataproc-dev', 'allow-ssh-from-management-zone-dev']) Specifies strings to be attached to the instance for later identifying the instance when adding network firewall rules, it can be a list, 
+* _SCHEDULER
+
+  
 More info: https://airflow.apache.org/docs/apache-airflow/1.10.3/_api/airflow/contrib/operators/dataproc_operator/index.html 
 
 [Optinal -but set in this demo]
-_ENV (ex. "dev")
-_LOCAL_MARKET (ex. 'es')
-_RELEASE  (ex. r1, r2, ...) 
-_SPARK_JAR (ex.'gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar'), if need to have it static 
+* _ENV (ex. "dev")
+* _LOCAL_MARKET (ex. 'es')
+* _RELEASE  (ex. r1, r2, ...) 
+* _SPARK_JAR (ex.'gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar'), if need to have it static 
 
 
 
