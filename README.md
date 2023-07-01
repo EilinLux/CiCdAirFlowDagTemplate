@@ -29,14 +29,10 @@ This repo is a template to set up deploy and test of DAG and Jobs
 # Environment variables
 Environment variables, as the name suggests, are variables in your system that describe your environment. 
 
-for some of the files you need to set up the following env variables 
-
-### add-dags-to-composer.cloudbuild.yaml
+#### project related
 *  _DAGS_DIRECTORY:   dags location for your AirFlow 
 *  _DAGS_BUCKET:  location on gcp Cloud Storage bucket that should store the code
-
-### GOALNAME/GOALNAME_job.py 
-#### project related
+* _WORKER_POOL
 * _PROJECT_ID
 * _REGION (ex. 'europe-west1')
 * _ZONE (ex. 'europe-west1-b'
