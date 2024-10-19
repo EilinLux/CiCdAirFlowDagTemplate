@@ -10,6 +10,9 @@ This repository provides a template for setting up, deploying, and testing Apach
     - [CI/CD](#ci-cd)
 - [Repository Structure](#repository-structure)
 - [Usage](#usage)
+    - [Prerequisites](#prerequisites)
+    - [Deployment with Cloud Build](#deployment-with-cloud-build)
+    - [Manual Deployment](#manual-deployment)
 - [Environment Variables](#environment-variables)
     - [Project-Related](#project-related)
     - [DAG-Related](#dag-related)
@@ -52,22 +55,52 @@ Continuous Integration and Continuous Delivery (CI/CD) automates the software de
 
 ## Usage
 
-This template provides a starting point for deploying your Airflow DAGs to Cloud Composer. You can customize it to fit your specific needs.
+### Prerequisites
+
+- **Google Cloud Project:** A Google Cloud project with billing enabled.
+- **Cloud Composer Environment:** A running Cloud Composer environment in your project.
+- **Cloud Storage Bucket:** A Cloud Storage bucket to store the DAG code.
+- **Service Account:** A service account with the necessary permissions to access Cloud Composer and Cloud Storage.
+- **gcloud CLI:** The gcloud command-line tool installed and configured.
+
+
+### Deployment with Cloud Build
+
+This template is designed to be used with Cloud Build for automated deployments.
+
+1. **Configure a Cloud Build Trigger:**
+   - In your Google Cloud console, navigate to Cloud Build > Triggers.
+   - Create a new trigger that is activated on pushes to your Git repository.
+   - Configure the trigger to use the `add-dags-to-composer.cloudbuild.yaml` file.
+
+2. **Push code changes:**
+   - Whenever you push code changes to your repository, the Cloud Build trigger will automatically:
+     - Build the necessary dependencies.
+     - Run the `utils/add_dags_to_composer.py` script to deploy the DAGs to your Composer environment.
+3. **Set environment variables:**
+    Configure the required environment variables (see the next section).
+
+### Manual Deployment
+
+If you prefer to deploy manually, you can follow these steps:
 
 1. **Clone the repository:**
-
-   ```bash
+   ```
    git clone [your-repository-url]
    ```
-2. Update the DAGs and configuration files:
+2. **Update the DAGs and configuration files:**
 
   Modify the GOALNAME-dag.py file to define your DAG's schedule, tasks, and dependencies.
   Update the GOALNAME_job.py file with your job's logic.
   Adjust the add-dags-to-composer.py script if needed.
-3. Set environment variables:
+3. **Set environment variables:**
     Configure the required environment variables (see the next section).
-4. Use Cloud Build for deployment:
-    Set up a Cloud Build trigger to automatically deploy your DAGs on code changes.
+4. **Run the deployment script:**
+
+    ```
+        python utils/add_dags_to_composer.py
+    ```
+
 ### Environment Variables
   **Project-Related**
 
