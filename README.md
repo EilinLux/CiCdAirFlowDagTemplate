@@ -35,14 +35,14 @@ Continuous Integration and Continuous Delivery (CI/CD) automates the software de
 - **Continuous Delivery:** Automatically deploy DAGs to a testing or production environment.
 
 ## Repository Structure
-
+```
 ├── dags
 │   └── spark_transformations
 │       ├── spark_transformations_job.py
 │       └── utils.zip
 └── utils
 └── add_dags_to_composer.py
-
+```
 
 - **`add-dags-to-composer.cloudbuild.yaml`:** Cloud Build configuration file for installing dependencies and running the deployment script.
 - **`utils/add_dags_to_composer.py`:** Python script to add DAGs to your Composer environment and provide utility functions (e.g., zipping files).
