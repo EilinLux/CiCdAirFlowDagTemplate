@@ -98,6 +98,7 @@ This template provides a starting point for deploying your Airflow DAGs to Cloud
        ```
 
 **Optional**
+
       ```
         _GOAL: Name or identifier for the DAG (e.g., spark_transformations).
         _ENV: Environment (e.g., dev).
