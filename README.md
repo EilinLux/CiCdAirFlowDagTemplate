@@ -70,6 +70,8 @@ This template provides a starting point for deploying your Airflow DAGs to Cloud
     Set up a Cloud Build trigger to automatically deploy your DAGs on code changes.
 ### Environment Variables
   **Project-Related**
+
+     ```
     _DAGS_DIRECTORY: Location of your DAGs within the repository (e.g., dags).
     _DAGS_BUCKET: Cloud Storage bucket to store the DAG code.
     _WORKER_POOL: Name of the worker pool in your Composer environment.
@@ -78,7 +80,11 @@ This template provides a starting point for deploying your Airflow DAGs to Cloud
     _ZONE: Zone within the region (e.g., europe-west1-b).
     _SUBNETWORK: Subnetwork for the Composer environment (e.g., projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_NAME).
     _SERVICE_ACCOUNT: Service account for the Composer environment (e.g., PROJECT_ID-comp-sa@PROJECT_ID.iam.gserviceaccount.com).
+    ```
+    
   **DAG-Related**
+  
+        ```  
     _IMAGE: Dataproc image version (e.g., 1.5.53-debian10).
     _MASTER_MACHINE: Machine type for the Dataproc master node.
     _WORKER_MACHINE: Machine type for the Dataproc worker nodes.
@@ -89,9 +95,13 @@ This template provides a starting point for deploying your Airflow DAGs to Cloud
     _MAX_IDLE: Maximum idle time for the Dataproc cluster.
     _TAGS: List of tags to attach to the Dataproc instances (e.g., ['allow-internal-dataproc-dev', 'allow-ssh-from-management-zone-dev']).
     _SCHEDULER: Scheduler configuration for the DAG.
-  **Optional**
-    _GOAL: Name or identifier for the DAG (e.g., spark_transformations).
-    _ENV: Environment (e.g., dev).
-    _LOCAL_MARKET: Local market or region (e.g., es).
-    _RELEASE: Release version (e.g., r1, r2).
-    _SPARK_JAR: Path to a Spark JAR file (e.g., gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar).
+       ```
+
+**Optional**
+      ```
+        _GOAL: Name or identifier for the DAG (e.g., spark_transformations).
+        _ENV: Environment (e.g., dev).
+        _LOCAL_MARKET: Local market or region (e.g., es).
+        _RELEASE: Release version (e.g., r1, r2).
+        _SPARK_JAR: Path to a Spark JAR file (e.g., gs://spark-lib/bigquery/spark-bigquery-latest_2.12.jar).
+       ```
