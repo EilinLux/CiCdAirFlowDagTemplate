@@ -1,0 +1,27 @@
+# Virtual environments & uv
+.venv/
+venv/
+ENV/
+
+# Local environment configuration (keep .env.example tracked)
+.env
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.nox/
+
+# Airflow local test artifacts
+airflow.db
+airflow.cfg
+logs/
+webserver_config.py
+standalone_admin_password.txt
+
+# OS & Editor files
+.DS_Store
+.vscode/
+.idea/
