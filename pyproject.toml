@@ -1,0 +1,39 @@
+# ==============================================================================
+# Cloud Composer CI/CD DAG Deployment Template — uv Project Configuration
+# ==============================================================================
+# Managed with `uv` (https://docs.astral.sh/uv/) for deterministic dependency
+# resolution, local DAG validation, and Cloud Build CI/CD pipelines.
+#
+# Quick commands:
+#   uv sync                  # Create/update virtual environment
+#   uv run pytest            # Execute DAG integrity & GCS sync unit tests
+# ==============================================================================
+
+[project]
+name = "cicd-airflow-dag-template"
+version = "2.0.0"
+description = "Production CI/CD template for testing and deploying Apache Airflow & Dataproc PySpark DAGs to Google Cloud Composer (Part 3 of the GCP Data Engineering Series)."
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "Eilin Lux", email = "eilinlux@gmail.com" }
+]
+dependencies = [
+    "apache-airflow==2.10.2",
+    "apache-airflow-providers-google==10.24.0",
+    "google-cloud-storage>=2.14.0",
+    "pyspark>=3.5.0",
+    "python-dotenv>=1.0.1",
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "dags", "utils"]
+testpaths = ["dags", "utils"]
+python_files = ["*_test.py", "test_*.py"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
