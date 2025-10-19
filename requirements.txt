@@ -1,0 +1,10 @@
+# ==============================================================================
+# Runtime Dependencies (Legacy pip fallback — primary config is pyproject.toml)
+# ==============================================================================
+# Use `uv sync` with `pyproject.toml` for local development and CI/CD.
+# This file is retained for compatibility with standard pip workflows.
+apache-airflow==2.10.2
+apache-airflow-providers-google==10.24.0
+google-cloud-storage>=2.14.0
+pyspark>=3.5.0
+python-dotenv>=1.0.1
