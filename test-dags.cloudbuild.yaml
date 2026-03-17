@@ -1,0 +1,40 @@
+# ==============================================================================
+# Continuous Integration (CI): Automated Airflow DAG Validation Pipeline
+# ==============================================================================
+# This Cloud Build configuration runs on Pull Requests or feature branch pushes
+# to verify that all Airflow DAGs in `dags/` and deployment helpers in `utils/`
+# parse cleanly, contain no dependency cycles, and pass unit tests before merge.
+#
+# Substitutions (injected via Cloud Build Trigger or `03_submit_cloud_build.sh`):
+#   _PROJECT_ID   : Google Cloud Project ID
+#   _REGION       : Google Cloud region (e.g., europe-west1)
+#   _DAGS_BUCKET  : Target Cloud Composer GCS bucket name (without gs://)
+#   _WORKER_POOL  : Cloud Build private worker pool name
+# ==============================================================================
+
+# [START composer_cicd_unittest_yaml]
+steps:
+  # Step 1: Synchronize deterministic Python dependencies using `uv`
+  - name: 'ghcr.io/astral-sh/uv:python3.11-bookworm-slim'
+    id: 'install-dependencies'
+    entrypoint: 'uv'
+    args: ['sync', '--no-dev']
+
+  # Step 2: Execute Airflow DAG integrity and unit test suite via `pytest`
+  - name: 'ghcr.io/astral-sh/uv:python3.11-bookworm-slim'
+    id: 'run-dag-unit-tests'
+    entrypoint: 'uv'
+    args: ['run', 'pytest', '-v', '-s', 'dags/', 'utils/']
+    env:
+      - '_PROJECT_ID=${_PROJECT_ID}'
+      - '_REGION=${_REGION}'
+      - '_DAGS_BUCKET=${_DAGS_BUCKET}'
+
+# Store Cloud Build execution logs in a dedicated GCS logging bucket
+logsBucket: 'gs://${_DAGS_BUCKET}-logging'
+
+options:
+  logging: GCS_ONLY
+  pool:
+    name: 'projects/${_PROJECT_ID}/locations/${_REGION}/workerPools/${_WORKER_POOL}'
+# [END composer_cicd_unittest_yaml]
