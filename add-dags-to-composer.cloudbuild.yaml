@@ -1,0 +1,43 @@
+# ==============================================================================
+# Continuous Delivery (CD): Automated Cloud Composer DAG Synchronization
+# ==============================================================================
+# This Cloud Build configuration runs when changes are merged into `main`.
+# It installs the deployment dependencies with `uv` and executes
+# `utils/add_dags_to_composer.py` to upload validated DAGs and PySpark `utils.zip`
+# bundles to the Cloud Composer environment's GCS bucket (`gs://${_DAGS_BUCKET}/dags`).
+#
+# Substitutions (injected via Cloud Build Trigger or `03_submit_cloud_build.sh`):
+#   _DAGS_DIRECTORY : Relative path to the DAGs directory (default: dags)
+#   _DAGS_BUCKET    : Cloud Composer GCS bucket name (without gs://)
+#   _PROJECT_ID     : Google Cloud Project ID
+#   _REGION         : Google Cloud region (e.g., europe-west1)
+#   _WORKER_POOL    : Cloud Build private worker pool name
+# ==============================================================================
+
+# [START composer_cicd_dagsync_yaml]
+steps:
+  # Step 1: Synchronize project dependencies using `uv`
+  - name: 'ghcr.io/astral-sh/uv:python3.11-bookworm-slim'
+    id: 'install-deploy-dependencies'
+    entrypoint: 'uv'
+    args: ['sync', '--no-dev']
+
+  # Step 2: Synchronize DAG files and PySpark zip artifacts to Cloud Composer GCS bucket
+  - name: 'ghcr.io/astral-sh/uv:python3.11-bookworm-slim'
+    id: 'sync-dags-to-composer'
+    entrypoint: 'uv'
+    args:
+      - 'run'
+      - 'python'
+      - 'utils/add_dags_to_composer.py'
+      - '--dags_directory=${_DAGS_DIRECTORY}'
+      - '--dags_bucket=${_DAGS_BUCKET}'
+
+# Store Cloud Build deployment logs in the dedicated GCS logging bucket
+logsBucket: 'gs://${_DAGS_BUCKET}-logging'
+
+options:
+  logging: GCS_ONLY
+  pool:
+    name: 'projects/${_PROJECT_ID}/locations/${_REGION}/workerPools/${_WORKER_POOL}'
+# [END composer_cicd_dagsync_yaml]
