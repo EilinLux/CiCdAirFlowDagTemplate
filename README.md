@@ -18,6 +18,8 @@ This repository provides a **production-ready CI/CD template** powered by **`uv`
 1. **Continuous Integration (`test-dags.cloudbuild.yaml`)**: Every change is validated in an isolated `uv` environment using `pytest` (`dags/internal_unit_testing.py`) to verify DAG import health, cycle-free task graphs (`check_cycle`), and PySpark driver logic.
 2. **Continuous Delivery (`add-dags-to-composer.cloudbuild.yaml`)**: Once tests pass, `utils/add_dags_to_composer.py` stages only production DAGs and nested PySpark job bundles (`utils.zip`), automatically stripping out unit tests and cache files before uploading to `gs://${_DAGS_BUCKET}/dags/`.
 
+> **Google Cloud Console Naming Note**: In the Google Cloud Console, **Cloud Dataproc** and **Dataproc Serverless** are now surfaced under **Managed Apache Spark** / **Google Cloud Serverless for Apache Spark**, while the underlying APIs (`dataproc.googleapis.com`), `gcloud dataproc` CLI commands, and Airflow operators (`DataprocCreateClusterOperator`, `DataprocSubmitJobOperator`, `DataprocDeleteClusterOperator`) continue to use the `dataproc` namespace.
+
 ---
 
 ## 2. The Storyline: How theRepository Connects End-to-End
@@ -89,11 +91,19 @@ CiCdAirFlowDagTemplate/
 
 ---
 
-## 4. Quickstart & Usage
+## 4. Quickstart, `uv` Environment Setup & Usage
 
 ### Prerequisites
-- **[`uv`](https://docs.astral.sh/uv/)** installed (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
-- **Google Cloud SDK (`gcloud`)** authenticated (`gcloud auth login` & `gcloud auth application-default login`)
+- **[`uv`](https://docs.astral.sh/uv/)** installed (`curl -LsSf https://astral.sh/uv/install.sh | sh` or `brew install uv`)
+- **Google Cloud SDK (`gcloud`)** authenticated with Application Default Credentials & Quota Project configured:
+  ```bash
+  gcloud auth login
+  gcloud auth application-default login
+  PROJECT_ID=$(gcloud config get-value project)
+  gcloud config set project "$PROJECT_ID"
+  gcloud config set billing/quota_project "$PROJECT_ID"
+  gcloud auth application-default set-quota-project "$PROJECT_ID"
+  ```
 
 ### Step 1: Configure `.env`
 Copy the example configuration file and adjust for your Google Cloud project:
@@ -101,7 +111,23 @@ Copy the example configuration file and adjust for your Google Cloud project:
 cp .env.example .env
 ```
 
-### Step 2: Run Unit & DAG Integrity Tests Locally
+### Step 2: Create or Synchronize the `uv` Virtual Environment (`uv sync`)
+This repository uses [`pyproject.toml`](./pyproject.toml) to manage `apache-airflow`, `apache-airflow-providers-google`, `google-cloud-storage`, `pyspark`, `python-dotenv`, and `pytest` inside a local `.venv`:
+```bash
+# Synchronize .venv from pyproject.toml
+uv sync
+
+# (Optional) If creating a new project from scratch with uv:
+# uv init --python 3.12
+# uv add "apache-airflow==2.10.2" "apache-airflow-providers-google==10.24.0" google-cloud-storage pyspark python-dotenv pytest pytest-mock
+
+# (Optional) If running interactive notebooks in an IDE, register .venv as a Jupyter kernel
+# to prevent `ModuleNotFoundError: No module named 'pyspark'` or `'airflow'`:
+# uv add --dev ipykernel
+# uv run python -m ipykernel install --user --name cicd-airflow --display-name "Python (cicd-airflow)"
+```
+
+### Step 3: Run Unit & DAG Integrity Tests Locally
 Validate all Airflow DAGs, PySpark jobs, and GCS deployment utilities:
 ```bash
 ./scripts/01_run_unit_tests.sh
@@ -109,7 +135,7 @@ Validate all Airflow DAGs, PySpark jobs, and GCS deployment utilities:
 uv run pytest -v dags/ utils/
 ```
 
-### Step 3: Package `utils.zip` & Deploy Manually to Cloud Composer
+### Step 4: Package `utils.zip` & Deploy Manually to Cloud Composer
 ```bash
 ./scripts/02_package_utils_and_deploy.sh
 ```
